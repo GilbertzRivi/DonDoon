@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="StreamTexture" id=1]
+flags = 4
+load_path = "res://.import/UI.png-9e43d7b92c809add6776b69d03ed993f.stex"
+
+[node name="Inventory" type="Node2D"]
+
+[node name="Sprite" type="Sprite" parent="."]
+
+[node name="Ui" type="Sprite" parent="Sprite"]
+position = Vector2( 511.5, 299.75 )
+scale = Vector2( 0.532813, 0.549537 )
+texture = SubResource( 1 )
