@@ -1,0 +1,43 @@
+2a60927148abd1d33b818b535e306557
+::res://::1684236578
+default_env.tres::Environment::-1::1684236562::0::1::::<><>::
+icon.png::CompressedTexture2D::4155919146347141547::1684078562::1684236578::1::::<><>::
+::res://assets/::1684178102
+Cat Sprite Sheet.png::CompressedTexture2D::1059585075959651710::1684174076::1684236578::1::::<><>::
+cat.png::CompressedTexture2D::2567471987195207026::1684174274::1684236578::1::::<><>::
+cat_enemy.png::CompressedTexture2D::3353867384023447812::1684174527::1684236578::1::::<><>::
+collider.png::CompressedTexture2D::8952225185929122954::1684168121::1684236578::1::::<><>::
+enemy.png::CompressedTexture2D::3523089019573626138::1684094324::1684236578::1::::<><>::
+floor.png::CompressedTexture2D::3847502384722421877::1684085141::1684236578::1::::<><>::
+player.png::CompressedTexture2D::1508895616413934681::1684084026::1684236578::1::::<><>::
+TX Plant.png::CompressedTexture2D::6823466275498492854::1611040733::1684236578::1::::<><>::
+TX Player.png::CompressedTexture2D::2980998783211506992::1611148897::1684236578::1::::<><>::
+TX Props.png::CompressedTexture2D::8626771968564609302::1611409327::1684236578::1::::<><>::
+TX Shadow Plant.png::CompressedTexture2D::7535582153230797304::1610161580::1684236578::1::::<><>::
+TX Shadow.png::CompressedTexture2D::260205892824263015::1611395353::1684236578::1::::<><>::
+TX Struct.png::CompressedTexture2D::5935191797976092819::1611396049::1684236578::1::::<><>::
+TX Tileset Grass.png::CompressedTexture2D::260960148834713204::1608882822::1684236578::1::::<><>::
+TX Tileset Stone Ground.png::CompressedTexture2D::8728053321955817708::1605366248::1684236578::1::::<><>::
+TX Tileset Wall.png::CompressedTexture2D::6772064856047311030::1611408779::1684236578::1::::<><>::
+wall-8 - 2 tiles tall-transparency.png::CompressedTexture2D::7597082445990369949::1655466156::1684236578::1::::<><>::
+wall-8 - 2 tiles tall.png::CompressedTexture2D::5166506524875240951::1649801862::1684236578::1::::<><>::
+wall.png::CompressedTexture2D::2149242354931563072::1684084023::1684236578::1::::<><>::
+[32x32] Dungeon Bricks Plain.png::CompressedTexture2D::7240432762244520784::1684178098::1684236578::1::::<><>::
+::res://scenes/::1684193929
+collider.tscn::PackedScene::-1::1684236562::0::1::::<><>::
+enemy.tscn::PackedScene::-1::1684236562::0::1::::<><>::res://assets/cat_enemy.png<>res://scripts/enemy.gd
+game_over.tscn::PackedScene::-1::1684236562::0::1::::<><>::
+inventory.tscn::PackedScene::-1::1684236562::0::1::::<><>::
+main.tscn::PackedScene::-1::1684236562::0::1::::<><>::res://assets/wall.png<>res://assets/floor.png<>res://scenes/player.tscn<>res://scripts/Player.gd<>res://scripts/Map.gd<>res://scenes/UI.tscn<>res://assets/TX Tileset Grass.png<>res://assets/[32x32] Dungeon Bricks Plain.png
+player.tscn::PackedScene::-1::1684236562::0::1::::<><>::res://assets/cat.png
+UI.tscn::PackedScene::-1::1684236562::0::1::::<><>::res://scripts/UI.gd
+::res://scenes/structures/::1684193585
+str1.tscn::PackedScene::-1::1684236562::0::1::::<><>::res://assets/[32x32] Dungeon Bricks Plain.png
+str2.tscn::PackedScene::-1::1684236562::0::1::::<><>::res://assets/[32x32] Dungeon Bricks Plain.png
+str3.tscn::PackedScene::-1::1684236562::0::1::::<><>::res://assets/[32x32] Dungeon Bricks Plain.png
+str4.tscn::PackedScene::-1::1684236562::0::1::::<><>::res://assets/[32x32] Dungeon Bricks Plain.png
+::res://scripts/::1684193929
+enemy.gd::GDScript::-1::1684236562::0::1::::<>CharacterBody2D<>::
+Map.gd::GDScript::-1::1684236562::0::1::::<>TileMap<>::
+Player.gd::GDScript::-1::1684236562::0::1::::<>CharacterBody2D<>::
+UI.gd::GDScript::-1::1684236562::0::1::::<>Control<>::

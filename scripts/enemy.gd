@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
 var tile_size = 32
 var directions = {"right": Vector2.RIGHT,
@@ -19,8 +19,8 @@ func move_to_player(player):
 		last_seen_player = player.position
 	if last_seen_player == Vector2(0,0):
 		return false
-	var enemy_pos = Map.world_to_map(position)
-	var player_pos = Map.world_to_map(last_seen_player)
+	var enemy_pos = Map.local_to_map(position)
+	var player_pos = Map.local_to_map(last_seen_player)
 	var direction_to_player = Vector2(player_pos.x - enemy_pos.x, player_pos.y - enemy_pos.y)
 	var dir = choose_direction(direction_to_player)
 	result = space_state.intersect_ray(position, position + (directions[dir] * tile_size), [self], 2)

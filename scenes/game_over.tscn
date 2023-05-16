@@ -3,8 +3,8 @@
 [node name="Node2D" type="Node2D"]
 
 [node name="TextEdit" type="TextEdit" parent="."]
-margin_left = 65.0
-margin_top = 49.0
-margin_right = 151.0
-margin_bottom = 75.0
+offset_left = 65.0
+offset_top = 49.0
+offset_right = 151.0
+offset_bottom = 75.0
 text = "Game Over"

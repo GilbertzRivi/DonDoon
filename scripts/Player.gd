@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
 var tile_size = 32
 var inputs = {"right": Vector2.RIGHT,
@@ -6,7 +6,7 @@ var inputs = {"right": Vector2.RIGHT,
 			"up": Vector2.UP,
 			"down": Vector2.DOWN}
 
-onready var ray = $RayCast2D
+@onready var ray = $RayCast2D
 
 var max_hp: int = 1000
 var hp: int = max_hp
@@ -36,7 +36,7 @@ func _unhandled_input(event):
 
 func move(dir):
 	var Map = get_tree().current_scene.get_node("Map")
-	ray.cast_to = inputs[dir] * tile_size
+	ray.target_position = inputs[dir] * tile_size
 	ray.force_raycast_update()
 	if !ray.is_colliding():
 		position += inputs[dir] * tile_size
@@ -70,7 +70,7 @@ func hit(damage):
 	hp -= damage
 	if hp <= 0:
 		game_over = true
-		var game_over = load("res://scenes/game_over.tscn").instance()
+		var game_over = load("res://scenes/game_over.tscn").instantiate()
 		$"../UI".add_child(game_over)
 	$"../UI".set_hp_bar(max_hp, hp)
 

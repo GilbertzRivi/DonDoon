@@ -45,16 +45,16 @@ func generate_new_row():
 	#if randi()%2:
 	if true:
 		var structure = random_choice(structures)
-		structure = load(structure).instance()
+		structure = load(structure).instantiate()
 		while offset == 0:
-			offset = int(rand_range(0, width-structure.get_used_rect().end.x))	
+			offset = int(randf_range(0, width-structure.get_used_rect().end.x))	
 		structure.position = Vector2(offset*tile_size, last_gen_y*tile_size)
 		add_child(structure)
 		structure.add_to_group("currently_generated_structures")
 			
 				
 	if randi()%5:
-		var enemy = preload("res://scenes/enemy.tscn").instance()
+		var enemy = preload("res://scenes/enemy.tscn").instantiate()
 		var position
 		var enemy_pos
 		var intersecting = true
@@ -63,7 +63,7 @@ func generate_new_row():
 			intersecting = false
 			for structure in get_tree().get_nodes_in_group("currently_generated_structures"):
 				for cell in structure.get_used_cells():
-					var block_pos = structure.map_to_world(cell) + structure.position + Vector2(tile_size/2, tile_size/2)
+					var block_pos = structure.map_to_local(cell) + structure.position + Vector2(tile_size/2, tile_size/2)
 					if block_pos == position:
 						intersecting = true
 		for structure in get_tree().get_nodes_in_group("currently_generated_structures"):
@@ -87,13 +87,13 @@ func update_enemies():
 			if not attacked:
 				moved = enemy.move_to_player(player)
 			if moved or attacked:
-				yield(get_tree().create_timer(1/60), "timeout")
+				await get_tree().create_timer(1/60).timeout
 	player.can_move()
 
 func set_block(pos: Vector2, type: Array, collision: bool) -> void:	
 	set_cell(pos.x, pos.y, random_choice(type))
 	if collision: 
-		var collider = preload("res://scenes/collider.tscn").instance()
+		var collider = preload("res://scenes/collider.tscn").instantiate()
 		collider.position = mtw_cords(pos)
 		add_child(collider)
 	
