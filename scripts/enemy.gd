@@ -10,6 +10,9 @@ var damage: int = 0
 var attack_range: float = 0
 var ray_move: RayCast2D
 var last_seen_player: Vector2 = Vector2(0, 0)
+var move_speed = 0
+var attack_speed = 0
+var dropped_xp = 0
 
 func move_to_player(player):
 	var Map = get_tree().current_scene.get_node("Map")
@@ -24,39 +27,37 @@ func move_to_player(player):
 	var enemy_pos = Map.local_to_map(position)
 	var player_pos = Map.local_to_map(last_seen_player)
 	var direction_to_player = Vector2(player_pos.x - enemy_pos.x, player_pos.y - enemy_pos.y)
-	var dir = choose_direction(direction_to_player)
-	ray_parameters = PhysicsRayQueryParameters2D.create(position, position + (directions[dir] * tile_size), 2, [self])
-	result = space_state.intersect_ray(ray_parameters)
-	if len(result) == 0:
-		position += directions[dir] * tile_size
-		return true
-	return false
+	var moved = false
+	for i in range(move_speed):
+		var dir = choose_direction(direction_to_player)
+		ray_parameters = PhysicsRayQueryParameters2D.create(position, position + (directions[dir] * tile_size), 2, [self])
+		result = space_state.intersect_ray(ray_parameters)
+		if len(result) == 0:
+			position += directions[dir] * tile_size
+			moved = true
+	return moved
 
 func set_hp(setted_hp):
 	hp = setted_hp
 	$HP_bar.max_value = hp
 	$HP_bar.value = hp
 	
-func set_damage(setted_damage):
-	damage = setted_damage
-	
-func set_range(setted_range):
-	attack_range = setted_range
-	
-func hit(setted_damage):
+func hit(player, setted_damage):
 	hp -= setted_damage
 	if hp <= 0:
+		player.add_xp(dropped_xp)
 		remove_from_group("enemies")
 		queue_free()
 	$HP_bar.value = hp
 	
 func attack(player) -> bool:
-	var distance = sqrt(pow(position.x - player.position.x,2) + pow(position.y - player.position.y,2))
-	if distance <= attack_range * tile_size:
-		player.hit(damage)
-		return true
-	else:
-		return false
+	var attacked = false
+	for i in range(attack_speed):
+		var distance = sqrt(pow(position.x - player.position.x,2) + pow(position.y - player.position.y,2))
+		if distance <= attack_range * tile_size:
+			player.hit(damage)
+			attacked = true
+	return attacked
 
 func choose_direction(direction_to_player: Vector2):
 	var dir = null

@@ -73,8 +73,11 @@ func generate_new_row():
 		add_child(enemy)
 		enemy.position = map_to_local(generated_position)
 		enemy.set_hp(15)
-		enemy.set_range(1.5)
-		enemy.set_damage(5)
+		enemy.attack_range = 1.5
+		enemy.damage = 5
+		enemy.attack_speed = 1
+		enemy.move_speed = 1
+		enemy.dropped_xp = 10
 		enemy.add_to_group("enemies")
 
 	offset = 0

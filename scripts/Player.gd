@@ -17,15 +17,19 @@ var game_over: bool = false
 var crit_chance: int = 5 # %
 var crit_multiplier: float = 1.5
 var damage_range: int = 15 # +- damage given in %
+var xp: int = 0
+var level: int = 1
+var skill_points: int = 0
 
 func _ready():
 	position = position.snapped(Vector2.ONE * tile_size)
 	position += Vector2.ONE * tile_size/2
-	get_tree().current_scene.get_node("UI")
 	$"../UI".set_hp_bar(max_hp, hp)
 
 func _unhandled_input(event):
 	if can_move and !game_over:
+		if event.is_action_pressed("inventory"):
+			inventory()
 		if event.is_action_pressed("action"):
 			attack()
 		for dir in inputs.keys():
@@ -58,7 +62,7 @@ func attack():
 	if mouse_pos.x < square.x1 and mouse_pos.x > square.x2 and mouse_pos.y < square.y1 and mouse_pos.y > square.y2:
 		for enemy in get_tree().get_nodes_in_group("enemies"):
 			if abs(enemy.position.x - mouse_pos.x) <= 16 and abs(enemy.position.y - mouse_pos.y) <= 16:
-				enemy.hit(calculated_damage)
+				enemy.hit(self, calculated_damage)
 				break
 	can_move = false
 	Map.update_enemies()
@@ -78,3 +82,16 @@ func calculate_damage(given_damage) -> int:
 	if randi()%100+1 < crit_chance:
 		calculated_damage *= crit_multiplier
 	return calculated_damage
+
+func add_xp(xp_amount):
+	xp += xp_amount
+	var level_treshold = level * 125
+	if xp >= level_treshold:
+		level += 1
+		skill_points += 1
+		xp = xp % level_treshold
+		print("level up")
+	print(xp)
+
+func inventory():
+	pass

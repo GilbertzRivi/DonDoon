@@ -1,6 +1,6 @@
 2a60927148abd1d33b818b535e306557
-::res://::1684348918
-default_env.tres::Environment::2654854820649557613::1684259668::0::1::::<><>::
+::res://::1684359951
+default_env.tres::Environment::2654854820649557613::1684359951::0::1::::<><>::
 icon.png::CompressedTexture2D::4155919146347141547::1684241860::1684241860::1::::<><>::
 ::res://assets/::1684241860
 Cat Sprite Sheet.png::CompressedTexture2D::1059585075959651710::1684241860::1684241860::1::::<><>::
@@ -23,20 +23,19 @@ wall-8 - 2 tiles tall-transparency.png::CompressedTexture2D::7597082445990369949
 wall-8 - 2 tiles tall.png::CompressedTexture2D::5166506524875240951::1684241860::1684241860::1::::<><>::
 wall.png::CompressedTexture2D::2149242354931563072::1684241860::1684241860::1::::<><>::
 [32x32] Dungeon Bricks Plain.png::CompressedTexture2D::7240432762244520784::1684241860::1684241860::1::::<><>::
-::res://scenes/::1684259668
+::res://scenes/::1684360157
 enemy.tscn::PackedScene::-1::1684241860::0::1::::<><>::res://assets/cat_enemy.png<>res://scripts/enemy.gd
 game_over.tscn::PackedScene::-1::1684241860::0::1::::<><>::
-inventory.tscn::PackedScene::-1::1684241860::0::1::::<><>::
-main.tscn::PackedScene::6426525857256623779::1684259668::0::1::::<><>::res://scenes/player.tscn<>res://scripts/Player.gd<>res://scripts/Map.gd<>res://scenes/UI.tscn<>uid://dyn8fyatxedw<>uid://dbfk4to2ghnqe
+main.tscn::PackedScene::6426525857256623779::1684359950::0::1::::<><>::res://scenes/player.tscn<>res://scripts/Player.gd<>res://scripts/Map.gd<>res://scenes/UI.tscn<>uid://dyn8fyatxedw<>uid://dbfk4to2ghnqe
 player.tscn::PackedScene::-1::1684241860::0::1::::<><>::res://assets/cat.png
 UI.tscn::PackedScene::-1::1684241860::0::1::::<><>::res://scripts/UI.gd
-::res://scenes/structures/::1684259668
-str1.tscn::PackedScene::6226073038665563787::1684259668::0::1::::<><>::uid://dbfk4to2ghnqe
-str2.tscn::PackedScene::8958592811270628980::1684259668::0::1::::<><>::uid://dbfk4to2ghnqe
-str3.tscn::PackedScene::212748172879653623::1684259668::0::1::::<><>::uid://dbfk4to2ghnqe
-str4.tscn::PackedScene::6776718804778174302::1684259668::0::1::::<><>::uid://dbfk4to2ghnqe
-::res://scripts/::1684251229
-enemy.gd::GDScript::-1::1684248665::0::1::::<>CharacterBody2D<>::
-Map.gd::GDScript::-1::1684251229::0::1::::<>TileMap<>::
-Player.gd::GDScript::-1::1684247244::0::1::::<>CharacterBody2D<>::
+::res://scenes/structures/::1684359950
+str1.tscn::PackedScene::6226073038665563787::1684359950::0::1::::<><>::uid://dbfk4to2ghnqe<>uid://cfuxuwoibelet
+str2.tscn::PackedScene::8958592811270628980::1684359950::0::1::::<><>::uid://dbfk4to2ghnqe<>uid://cfuxuwoibelet
+str3.tscn::PackedScene::212748172879653623::1684359950::0::1::::<><>::uid://dbfk4to2ghnqe<>uid://cfuxuwoibelet
+str4.tscn::PackedScene::6776718804778174302::1684359950::0::1::::<><>::uid://dbfk4to2ghnqe<>uid://cfuxuwoibelet
+::res://scripts/::1684359949
+enemy.gd::GDScript::-1::1684359180::0::1::::<>CharacterBody2D<>::
+Map.gd::GDScript::-1::1684359949::0::1::::<>TileMap<>::
+Player.gd::GDScript::-1::1684359913::0::1::::<>CharacterBody2D<>::
 UI.gd::GDScript::-1::1684241860::0::1::::<>Control<>::
