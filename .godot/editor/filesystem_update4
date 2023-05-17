@@ -1,2 +1,7 @@
 res://default_env.tres
+res://scenes/structures/str1.tscn
+res://scripts/Map.gd
 res://scenes/main.tscn
+res://scenes/structures/str4.tscn
+res://scenes/structures/str3.tscn
+res://scenes/structures/str2.tscn

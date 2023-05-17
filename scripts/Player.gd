@@ -44,10 +44,7 @@ func move(dir):
 		if dir == "down" and int(position.y/tile_size) % 4 == 0:
 			Map.generate_new_row()
 		Map.update_enemies()
-		
-func can_move():
-	can_move = true
-	
+			
 func attack():
 	var Map = get_tree().current_scene.get_node("Map")
 	var mouse_pos = get_global_mouse_position()
@@ -66,12 +63,12 @@ func attack():
 	can_move = false
 	Map.update_enemies()
 
-func hit(damage):
-	hp -= damage
+func hit(given_damage):
+	hp -= given_damage
 	if hp <= 0:
 		game_over = true
-		var game_over = load("res://scenes/game_over.tscn").instantiate()
-		$"../UI".add_child(game_over)
+		var game_over_screen = load("res://scenes/game_over.tscn").instantiate()
+		$"../UI".add_child(game_over_screen)
 	$"../UI".set_hp_bar(max_hp, hp)
 
 func calculate_damage(given_damage) -> int:

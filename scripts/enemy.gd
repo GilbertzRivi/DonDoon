@@ -14,8 +14,10 @@ var last_seen_player: Vector2 = Vector2(0, 0)
 func move_to_player(player):
 	var Map = get_tree().current_scene.get_node("Map")
 	var space_state = get_world_2d().direct_space_state
-	var result = space_state.intersect_ray(position, player.position, [self], 2)
-	if !result:
+	var ray_parameters = PhysicsRayQueryParameters2D.create(position, player.position, 2, [self])
+	var result = space_state.intersect_ray(ray_parameters)
+	
+	if len(result) == 0:
 		last_seen_player = player.position
 	if last_seen_player == Vector2(0,0):
 		return false
@@ -23,25 +25,26 @@ func move_to_player(player):
 	var player_pos = Map.local_to_map(last_seen_player)
 	var direction_to_player = Vector2(player_pos.x - enemy_pos.x, player_pos.y - enemy_pos.y)
 	var dir = choose_direction(direction_to_player)
-	result = space_state.intersect_ray(position, position + (directions[dir] * tile_size), [self], 2)
-	if !result:
+	ray_parameters = PhysicsRayQueryParameters2D.create(position, position + (directions[dir] * tile_size), 2, [self])
+	result = space_state.intersect_ray(ray_parameters)
+	if len(result) == 0:
 		position += directions[dir] * tile_size
 		return true
 	return false
 
-func set_hp(set_hp):
-	hp = set_hp
+func set_hp(setted_hp):
+	hp = setted_hp
 	$HP_bar.max_value = hp
 	$HP_bar.value = hp
 	
-func set_damage(set_damage):
-	damage = set_damage
+func set_damage(setted_damage):
+	damage = setted_damage
 	
-func set_range(set_range):
-	attack_range = set_range
+func set_range(setted_range):
+	attack_range = setted_range
 	
-func hit(set_damage):
-	hp -= set_damage
+func hit(setted_damage):
+	hp -= setted_damage
 	if hp <= 0:
 		remove_from_group("enemies")
 		queue_free()
@@ -62,27 +65,35 @@ func choose_direction(direction_to_player: Vector2):
 	if abs(direction_to_player.x) > abs(direction_to_player.y):
 		if direction_to_player.x > 0:
 			dir = "right"
-			result = space_state.intersect_ray(position, position + (directions[dir] * tile_size), [self], 2)
-			if result:
+			result = space_state.intersect_ray(
+				PhysicsRayQueryParameters2D.create(position, position + (directions[dir] * tile_size), 2, [self])
+			)
+			if len(result) != 0:
 				if direction_to_player.y > 0: dir = "down"
 				else: dir = "up"
 		else: 
 			dir = "left"
-			result = space_state.intersect_ray(position, position + (directions[dir] * tile_size), [self], 2)
-			if result:
+			result = space_state.intersect_ray(
+				PhysicsRayQueryParameters2D.create(position, position + (directions[dir] * tile_size), 2, [self])
+			)
+			if len(result) != 0:
 				if direction_to_player.y > 0: dir = "down"
 				else: dir = "up"
 	else:
 		if direction_to_player.y > 0: 
 			dir = "down"
-			result = space_state.intersect_ray(position, position + (directions[dir] * tile_size), [self], 2)
-			if result:
+			result = space_state.intersect_ray(
+				PhysicsRayQueryParameters2D.create(position, position + (directions[dir] * tile_size), 2, [self])
+			)
+			if len(result) != 0:
 				if direction_to_player.x > 0: dir = "right"
 				else: dir = "left"
 		else:
 			dir = "up"
-			result = space_state.intersect_ray(position, position + (directions[dir] * tile_size), [self], 2)
-			if result:
+			result = space_state.intersect_ray(
+				PhysicsRayQueryParameters2D.create(position, position + (directions[dir] * tile_size), 2, [self])
+			)
+			if len(result) != 0:
 				if direction_to_player.x > 0: dir = "right"
 				else: dir = "left"
 	

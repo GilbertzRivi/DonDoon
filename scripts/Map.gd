@@ -1,9 +1,9 @@
 extends TileMap
 
-var width: int = 16
+var width: int = 17
 var start_height: int = 12
-var wall_cells = [7]
-var floor_cells = [2, 3, 4, 5]
+var wall_cells = [Vector2i(0, 0)]
+var floor_cells = [Vector2i(0, 0), Vector2i(4, 0), Vector2i(6, 1)]
 var last_gen_y = 0
 var offset = 0
 var tile_size = 32
@@ -18,58 +18,60 @@ var structures = [
 	"res://scenes/structures/str3.tscn",
 	"res://scenes/structures/str4.tscn",
 ]
+var floor_atlas = 0
+var wall_atlas = 1
 
 func _ready():
+	position = Vector2i(0, 0)
 	generate_start()
+	$"../Player".position = Vector2i(int(width/2)*tile_size, 2*tile_size)
 	randomize()
 	
 func generate_start():
 	for y in range(start_height):
 		last_gen_y = y
 		for x in range(width):
+			set_cell(0, Vector2i(x, y), floor_atlas, random_choice(floor_cells))	
 			if y == 0:
-				set_block(Vector2(x, y), wall_cells, true)
+				set_cell(1, Vector2i(x, y), wall_atlas, random_choice(wall_cells))
 			elif x == 0 or x == width-1:
-				set_block(Vector2(x, y), wall_cells, true)
-			else:
-				set_block(Vector2(x, y), floor_cells, false)
+				set_cell(1, Vector2i(x, y), wall_atlas, random_choice(wall_cells))
 
 func generate_new_row():
 	last_gen_y += 1
 	for y in range(4):
 		for x in range(width):
+			set_cell(0, Vector2(x, last_gen_y+y), floor_atlas, random_choice(floor_cells))
 			if x == 0 or x == width-1:
-				set_block(Vector2(x, last_gen_y+y), wall_cells, true)
-			else:
-				set_block(Vector2(x, last_gen_y+y), floor_cells, false)
-	#if randi()%2:
-	if true:
+				set_cell(1, Vector2(x, last_gen_y+y), wall_atlas, random_choice(wall_cells))
+	if randi()%2:
 		var structure = random_choice(structures)
 		structure = load(structure).instantiate()
 		while offset == 0:
 			offset = int(randf_range(0, width-structure.get_used_rect().end.x))	
-		structure.position = Vector2(offset*tile_size, last_gen_y*tile_size)
-		add_child(structure)
-		structure.add_to_group("currently_generated_structures")
-			
-				
+		structure.position = Vector2i(offset*tile_size, last_gen_y*tile_size)
+		structure.name = "Structure"
+		structure.add_to_group("last_gen_structures")
+		$"..".add_child(structure)
+
 	if randi()%5:
 		var enemy = preload("res://scenes/enemy.tscn").instantiate()
-		var position
+		var generated_position
 		var enemy_pos
+		var tile_pos
 		var intersecting = true
 		while intersecting:
-			position = mtw_cords(Vector2(randi()%(width-2)+1, last_gen_y))
+			generated_position = Vector2i(randi()%(width-2)+1, last_gen_y)
 			intersecting = false
-			for structure in get_tree().get_nodes_in_group("currently_generated_structures"):
-				for cell in structure.get_used_cells():
-					var block_pos = structure.map_to_local(cell) + structure.position + Vector2(tile_size/2, tile_size/2)
-					if block_pos == position:
+			for structure in get_tree().get_nodes_in_group("last_gen_structures"):
+				for tile in structure.get_used_cells(0):
+					tile_pos = structure.position / tile_size + Vector2(tile.x, tile.y)
+					if generated_position == Vector2i(tile_pos.x, tile_pos.y):
 						intersecting = true
-		for structure in get_tree().get_nodes_in_group("currently_generated_structures"):
-			structure.remove_from_group("currently_generated_structures")
-		$"..".add_child(enemy)
-		enemy.position = position
+		for structure in get_tree().get_nodes_in_group("last_gen_structures"):
+			structure.remove_from_group('last_gen_structures')
+		add_child(enemy)
+		enemy.position = map_to_local(generated_position)
 		enemy.set_hp(15)
 		enemy.set_range(1.5)
 		enemy.set_damage(5)
@@ -88,19 +90,12 @@ func update_enemies():
 				moved = enemy.move_to_player(player)
 			if moved or attacked:
 				await get_tree().create_timer(1/60).timeout
-	player.can_move()
+	player.can_move = true
 
-func set_block(pos: Vector2, type: Array, collision: bool) -> void:	
-	set_cell(pos.x, pos.y, random_choice(type))
-	if collision: 
-		var collider = preload("res://scenes/collider.tscn").instantiate()
-		collider.position = mtw_cords(pos)
-		add_child(collider)
+func mtw_cords(pos: Vector2i) -> Vector2i:
+	return Vector2i(pos.x * tile_size + tile_size/2, pos.y * tile_size + tile_size/2)
 	
-func mtw_cords(pos: Vector2) -> Vector2:
-	return Vector2(pos.x * tile_size + tile_size/2, pos.y * tile_size + tile_size/2)
-	
-func distance(pos1: Vector2, pos2: Vector2) -> float:
+func distance(pos1: Vector2i, pos2: Vector2i) -> float:
 	return sqrt(pow(pos1.x - pos2.x, 2) + pow(pos1.y - pos2.y, 2))
 	
 func random_choice(array: Array):
