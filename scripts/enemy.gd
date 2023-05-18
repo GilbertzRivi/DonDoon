@@ -17,7 +17,8 @@ var dropped_xp = 0
 
 func _ready():
 	_animated_sprite.play("idle")
-
+	$Button.pressed.connect(self.being_attacked)
+	
 func move_to_player(player):
 	var Map = get_tree().current_scene.get_node("Map")
 	var space_state = get_world_2d().direct_space_state
@@ -103,3 +104,6 @@ func choose_direction(direction_to_player: Vector2):
 				else: dir = "left"
 	
 	return dir
+
+func being_attacked():
+	$"../../Player".attack(self)

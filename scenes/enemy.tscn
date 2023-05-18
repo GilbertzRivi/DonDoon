@@ -37,16 +37,26 @@ script = ExtResource("2")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("1")
 
-[node name="HP_bar" type="ProgressBar" parent="."]
-offset_left = -13.0
-offset_top = -32.0
-offset_right = 13.0
-offset_bottom = -18.0
-step = 1.0
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(-0.999999, -22)
+position = Vector2(-1, -22)
 scale = Vector2(1.50781, 1.70139)
 sprite_frames = SubResource("6")
 animation = &"idle"
 frame_progress = 0.694274
+
+[node name="HP_bar" type="ProgressBar" parent="."]
+modulate = Color(0.992157, 0, 0.227451, 1)
+offset_left = -15.0
+offset_top = 10.0
+offset_right = 171.0
+offset_bottom = 41.0
+scale = Vector2(0.15, 0.15)
+step = 1.0
+show_percentage = false
+
+[node name="Button" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0)
+offset_left = -14.0
+offset_top = -26.0
+offset_right = 12.0
+offset_bottom = 9.0

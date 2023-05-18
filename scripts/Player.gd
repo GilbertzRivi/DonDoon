@@ -11,6 +11,8 @@ var inputs = {"right": Vector2.RIGHT,
 
 var max_hp: int = 1000
 var hp: int = max_hp
+var max_mana: int = 1000
+var mana: int = max_mana
 var can_move: bool = true
 var attack_range: float = 1.5
 var damage: int = 10
@@ -20,20 +22,21 @@ var crit_multiplier: float = 1.5
 var damage_range: int = 15 # +- damage given in %
 var xp: int = 0
 var level: int = 1
+var level_treshold: int = level * 125
 var skill_points: int = 0
 
 func _ready():
 	position = position.snapped(Vector2.ONE * tile_size)
 	position += Vector2.ONE * tile_size/2
 	$"../UI".set_hp_bar(max_hp, hp)
+	$"../UI".set_mana_bar(max_mana, mana)
+	$"../UI".set_xp_bar(level_treshold, xp)
 	_animated_sprite.play("idle")
 
 func _unhandled_input(event):
 	if can_move and !game_over:
 		if event.is_action_pressed("inventory"):
 			inventory()
-		if event.is_action_pressed("action"):
-			attack()
 		for dir in inputs.keys():
 			if event.is_action_pressed(dir):
 				move(dir)
@@ -51,23 +54,14 @@ func move(dir):
 			Map.generate_new_row()
 		Map.update_enemies()
 			
-func attack():
+func attack(enemy):
 	var Map = get_tree().current_scene.get_node("Map")
-	var mouse_pos = get_global_mouse_position()
-	var square = {
-		"x1": global_position.x + (attack_range * tile_size) + 6,
-		"x2": global_position.x - (attack_range * tile_size) + 10,
-		"y1": global_position.y + (attack_range * tile_size) + 6,
-		"y2": global_position.y - (attack_range * tile_size) + 25,
-		}
 	var calculated_damage = calculate_damage(damage)
-	if mouse_pos.x < square.x1 and mouse_pos.x > square.x2 and mouse_pos.y < square.y1 and mouse_pos.y > square.y2:
-		for enemy in get_tree().get_nodes_in_group("enemies"):
-			if abs(enemy.position.x - mouse_pos.x) <= 16 and abs(enemy.position.y - mouse_pos.y) <= 16:
-				enemy.hit(self, calculated_damage)
-				break
-	can_move = false
-	Map.update_enemies()
+	if (abs(enemy.global_position.x - self.position.x) < tile_size * attack_range and 
+		abs(enemy.global_position.y - self.position.y) < tile_size * attack_range):
+		enemy.hit(self, damage)
+		can_move = false
+		Map.update_enemies()
 
 func hit(given_damage):
 	hp -= given_damage
@@ -87,13 +81,12 @@ func calculate_damage(given_damage) -> int:
 
 func add_xp(xp_amount):
 	xp += xp_amount
-	var level_treshold = level * 125
 	if xp >= level_treshold:
 		level += 1
 		skill_points += 1
+		level_treshold = level * 125
 		xp = xp % level_treshold
-		print("level up")
-	print(xp)
+	$"../UI".set_xp_bar(level_treshold, xp)
 
 func inventory():
 	pass
