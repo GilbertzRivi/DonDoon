@@ -60,18 +60,11 @@ func set_hp(setted_hp):
 	$HP_bar.value = hp
 	
 func hit(player, given_damage, armour_penetration):
-	hp =- given_damage - given_damage * (armour - armour_penetration)
+	hp -= given_damage - given_damage * (armour - armour_penetration)
 	if hp <= 0:
-		var loot = get_tree().current_scene.get_node("Map").loot_table
 		player.add_xp(dropped_xp)
 		remove_from_group("enemies")
-		if randi()% 100 + 1 <= loot['coins']['chance']:
-			var coin = load(loot['coins']['src']).instantiate()
-			coin.amount = randi_range(loot['coins']['min_amount'], loot['coins']['max_amount'])
-			coin.script_name = "coins"
-			coin.position = self.position
-			coin.add_to_group("loot")
-			get_parent().add_child(coin)
+		drop_loot()
 		queue_free()
 	$HP_bar.value = hp
 	
@@ -126,3 +119,19 @@ func choose_direction(direction_to_player: Vector2):
 
 func being_attacked():
 	$"../../Player".attack(self)
+
+func drop_loot():
+	var loot = get_tree().current_scene.get_node("Map").loot_table
+	var choosen_loot = loot.keys()[randi() % loot.keys().size()]
+	loot = loot[choosen_loot]
+	if choosen_loot == 'coins':
+		var coin = load(loot['src']).instantiate()
+		coin.amount = randi_range(loot['min_amount'], loot['max_amount'])
+		coin.script_name = "coins"
+		coin.position = self.position
+		coin.add_to_group("loot")
+		get_parent().add_child(coin)
+#	else:
+#		loot = load(loot['src']).instantiate()
+#		loot.script_name = choosen_loot
+#		loot.position = self.position

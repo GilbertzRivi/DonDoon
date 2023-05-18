@@ -28,7 +28,7 @@ var looking_dir = "down"
 var coins: int = 0
 var fists = {
 	"name": "fists",
-	"damage": 50,
+	"damage": 5,
 	"damage_range": 15,
 	"crit_chance": 5,
 	"crit_multiplier": 1.5,
@@ -89,11 +89,21 @@ func attack(enemy):
 			weapon = eq['weapon']
 		calculated_damage = calculate_damage(weapon)
 		var distance = sqrt(pow(enemy.position.x - self.position.x, 2) + pow(enemy.position.y - self.position.y, 2))
-		if distance <= tile_size * weapon["range"]:
+		var x
+		if looking_dir == "right":
+			x = self.position.x - enemy.position.x
+		elif looking_dir == "left":
+			x = enemy.position.x - self.position.x
+		elif looking_dir == "down":
+			x = self.position.y - enemy.position.y
+		elif looking_dir == "up":
+			x = enemy.position.y - self.position.y
+		var angle_cos: float = x/distance
+		if distance <= tile_size * weapon["range"] and angle_cos <= cos(deg_to_rad(weapon['attack_angle'])):
 			enemy.hit(self, calculated_damage, weapon["armour_penetration"])
-		attacked_times += 1
-		if attacked_times >= weapon["attack_speed"]:
-			actions_done += 1
+			attacked_times += 1
+			if attacked_times >= weapon["attack_speed"]:
+				actions_done += 1
 	if actions_done:
 		can_move = false
 		Map.update_enemies()

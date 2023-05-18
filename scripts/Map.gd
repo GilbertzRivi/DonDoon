@@ -22,7 +22,7 @@ var wall_cells = {"r": Vector2i(12, 9), "l": Vector2i(13, 9)}
 var floor_cells = [Vector2i(18, 4), Vector2i(18, 5), Vector2i(19, 6), Vector2i(20, 7)]
 
 var loot_table = { 
-	25: {
+	"25": {
 		"name": "stick",
 		"damage": 10,
 		"damage_range": 15,
@@ -34,7 +34,7 @@ var loot_table = {
 		"armour_penetration": 0,
 		"src": ""
 		},
-	10: {
+	"10": {
 		"name": "sword",
 		"damage": 10,
 		"damage_range": 15,
