@@ -1,4 +1,8 @@
 res://default_env.tres
+res://scenes/UI.tscn
+res://scripts/Player.gd
+res://scripts/enemy.gd
+res://scripts/Map.gd
 res://scenes/enemy.tscn
 res://scenes/main.tscn
 res://scenes/structures/str1.tscn
@@ -7,7 +11,3 @@ res://scenes/structures/str3.tscn
 res://scenes/structures/str4.tscn
 res://scenes/inventory.tscn
 res://scenes/player.tscn
-res://scripts/enemy.gd
-res://scripts/Player.gd
-res://scenes/UI.tscn
-res://scripts/UI.gd

@@ -185,7 +185,5 @@ position = Vector2(146, 58)
 script = ExtResource("4")
 
 [node name="UI" parent="." instance=ExtResource("6")]
-layout_mode = 3
-anchors_preset = 15
 grow_horizontal = 2
 grow_vertical = 2

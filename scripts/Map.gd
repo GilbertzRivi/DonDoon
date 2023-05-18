@@ -72,8 +72,7 @@ func generate_new_row():
 		enemy.set_hp(15)
 		enemy.attack_range = 1.5
 		enemy.damage = 5
-		enemy.attack_speed = 1
-		enemy.move_speed = 1
+		enemy.speed = 1
 		enemy.dropped_xp = 10
 		enemy.add_to_group("enemies")
 
@@ -83,13 +82,7 @@ func generate_new_row():
 func update_enemies():
 	var player = $"../Player"
 	for enemy in get_tree().get_nodes_in_group("enemies"):
-		if distance(enemy.position, player.position)/32 <= 20:
-			var attacked = enemy.attack(player)
-			var moved = false
-			if not attacked:
-				moved = enemy.move_to_player(player)
-			if moved or attacked:
-				await get_tree().create_timer(1/60).timeout
+		enemy.action(player)
 	player.can_move = true
 
 func mtw_cords(pos: Vector2i) -> Vector2i:

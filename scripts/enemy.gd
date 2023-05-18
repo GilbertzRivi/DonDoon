@@ -6,18 +6,30 @@ var directions = {"right": Vector2.RIGHT,
 			"left": Vector2.LEFT,
 			"up": Vector2.UP,
 			"down": Vector2.DOWN}
-var hp: int = 0
-var damage: int = 0
-var attack_range: float = 0
+var hp: int
+var damage: int
+var attack_range: float
 var ray_move: RayCast2D
 var last_seen_player: Vector2 = Vector2(0, 0)
-var move_speed = 0
-var attack_speed = 0
-var dropped_xp = 0
+var speed: int
+var dropped_xp: int
 
 func _ready():
 	_animated_sprite.play("idle")
 	$Button.pressed.connect(self.being_attacked)
+	
+func distance(pos1: Vector2i, pos2: Vector2i) -> float:
+	return sqrt(pow(pos1.x - pos2.x, 2) + pow(pos1.y - pos2.y, 2))
+	
+func action(player):
+	if distance(self.global_position, player.position)/32 <= 20:
+		for i in range(speed):
+			var attacked = self.attack(player)
+			var moved = false
+			if not attacked:
+				moved = self.move_to_player(player)
+			if moved or attacked:
+				await get_tree().create_timer(speed/60).timeout
 	
 func move_to_player(player):
 	var Map = get_tree().current_scene.get_node("Map")
@@ -33,13 +45,12 @@ func move_to_player(player):
 	var player_pos = Map.local_to_map(last_seen_player)
 	var direction_to_player = Vector2(player_pos.x - enemy_pos.x, player_pos.y - enemy_pos.y)
 	var moved = false
-	for i in range(move_speed):
-		var dir = choose_direction(direction_to_player)
-		ray_parameters = PhysicsRayQueryParameters2D.create(position, position + (directions[dir] * tile_size), 2, [self])
-		result = space_state.intersect_ray(ray_parameters)
-		if len(result) == 0:
-			position += directions[dir] * tile_size
-			moved = true
+	var dir = choose_direction(direction_to_player)
+	ray_parameters = PhysicsRayQueryParameters2D.create(position, position + (directions[dir] * tile_size), 2, [self])
+	result = space_state.intersect_ray(ray_parameters)
+	if len(result) == 0:
+		position += directions[dir] * tile_size
+		moved = true
 	return moved
 
 func set_hp(setted_hp):
@@ -57,11 +68,10 @@ func hit(player, setted_damage):
 	
 func attack(player) -> bool:
 	var attacked = false
-	for i in range(attack_speed):
-		var distance = sqrt(pow(position.x - player.position.x,2) + pow(position.y - player.position.y,2))
-		if distance <= attack_range * tile_size:
-			player.hit(damage)
-			attacked = true
+	var distance = sqrt(pow(position.x - player.position.x,2) + pow(position.y - player.position.y,2))
+	if distance <= attack_range * tile_size:
+		player.hit(damage)
+		attacked = true
 	return attacked
 
 func choose_direction(direction_to_player: Vector2):
