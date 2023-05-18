@@ -1,46 +1,41 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=3 uid="uid://f0iufs2weabg"]
 
-[ext_resource path="res://assets/cat_enemy.png" type="Texture2D" id=1]
-[ext_resource path="res://scripts/enemy.gd" type="Script" id=2]
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://r3kcyuqhm5wh" path="res://assets2/0x72_DungeonTilesetII_v1.6/frames/big_zombie_idle_anim_f0.png" id="2_tkkml"]
+[ext_resource type="Texture2D" uid="uid://br4qor5dgnmqx" path="res://assets2/0x72_DungeonTilesetII_v1.6/frames/big_zombie_idle_anim_f1.png" id="3_288y0"]
+[ext_resource type="Texture2D" uid="uid://dn8a3rtmcnvyj" path="res://assets2/0x72_DungeonTilesetII_v1.6/frames/big_zombie_idle_anim_f2.png" id="4_aaoqw"]
+[ext_resource type="Texture2D" uid="uid://b5u12hnf6fxik" path="res://assets2/0x72_DungeonTilesetII_v1.6/frames/big_zombie_idle_anim_f3.png" id="5_x6rc1"]
 
-[sub_resource type="RectangleShape2D" id=1]
-size = Vector2( 16, 16 )
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(16, 16)
 
-[sub_resource type="AtlasTexture" id=2]
-flags = 4
-atlas = ExtResource( 1 )
-region = Rect2( 96, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=3]
-flags = 4
-atlas = ExtResource( 1 )
-region = Rect2( 64, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=4]
-flags = 4
-atlas = ExtResource( 1 )
-region = Rect2( 32, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=5]
-flags = 4
-atlas = ExtResource( 1 )
-region = Rect2( 0, 0, 32, 32 )
-
-[sub_resource type="SpriteFrames" id=6]
-animations = [ {
-"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 2 ), SubResource( 2 ), SubResource( 2 ), SubResource( 2 ) ],
+[sub_resource type="SpriteFrames" id="6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_tkkml")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_288y0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_aaoqw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_x6rc1")
+}],
 "loop": true,
-"name": "default",
+"name": &"idle",
 "speed": 5.0
-} ]
+}]
 
 [node name="Enemy" type="CharacterBody2D" groups=["enemies"]]
 collision_layer = 3
 collision_mask = 3
-script = ExtResource( 2 )
+script = ExtResource("2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
+shape = SubResource("1")
 
 [node name="HP_bar" type="ProgressBar" parent="."]
 offset_left = -13.0
@@ -50,8 +45,8 @@ offset_bottom = -18.0
 step = 1.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2( -2.5, -7.7486e-07 )
-scale = Vector2( 1.21875, 1.25 )
-frames = SubResource( 6 )
-frame = 2
-playing = true
+position = Vector2(-0.999999, -22)
+scale = Vector2(1.50781, 1.70139)
+sprite_frames = SubResource("6")
+animation = &"idle"
+frame_progress = 0.694274

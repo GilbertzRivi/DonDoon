@@ -7,6 +7,7 @@ var inputs = {"right": Vector2.RIGHT,
 			"down": Vector2.DOWN}
 
 @onready var ray = $RayCast2D
+@onready var _animated_sprite = $AnimatedSprite2D
 
 var max_hp: int = 1000
 var hp: int = max_hp
@@ -25,6 +26,7 @@ func _ready():
 	position = position.snapped(Vector2.ONE * tile_size)
 	position += Vector2.ONE * tile_size/2
 	$"../UI".set_hp_bar(max_hp, hp)
+	_animated_sprite.play("idle")
 
 func _unhandled_input(event):
 	if can_move and !game_over:
@@ -53,10 +55,10 @@ func attack():
 	var Map = get_tree().current_scene.get_node("Map")
 	var mouse_pos = get_global_mouse_position()
 	var square = {
-		"x1": global_position.x + (attack_range * tile_size) - 2,
-		"x2": global_position.x - (attack_range * tile_size) + 2,
-		"y1": global_position.y + (attack_range * tile_size) - 2,
-		"y2": global_position.y - (attack_range * tile_size) + 2,
+		"x1": global_position.x + (attack_range * tile_size) + 6,
+		"x2": global_position.x - (attack_range * tile_size) + 10,
+		"y1": global_position.y + (attack_range * tile_size) + 6,
+		"y2": global_position.y - (attack_range * tile_size) + 25,
 		}
 	var calculated_damage = calculate_damage(damage)
 	if mouse_pos.x < square.x1 and mouse_pos.x > square.x2 and mouse_pos.y < square.y1 and mouse_pos.y > square.y2:

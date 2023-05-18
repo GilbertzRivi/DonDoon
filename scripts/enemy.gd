@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+@onready var _animated_sprite = $AnimatedSprite2D
 var tile_size = 32
 var directions = {"right": Vector2.RIGHT,
 			"left": Vector2.LEFT,
@@ -13,6 +14,9 @@ var last_seen_player: Vector2 = Vector2(0, 0)
 var move_speed = 0
 var attack_speed = 0
 var dropped_xp = 0
+
+func _ready():
+	_animated_sprite.play("idle")
 
 func move_to_player(player):
 	var Map = get_tree().current_scene.get_node("Map")

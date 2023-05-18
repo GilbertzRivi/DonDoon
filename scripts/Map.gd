@@ -2,9 +2,7 @@ extends TileMap
 
 var width: int = 17
 var start_height: int = 12
-var wall_cells = [Vector2i(0, 0)]
-var floor_cells = [Vector2i(0, 0), Vector2i(4, 0), Vector2i(6, 1)]
-var last_gen_y = 0
+var last_gen_y = 4
 var offset = 0
 var tile_size = 32
 var enemies = []
@@ -19,31 +17,30 @@ var structures = [
 	"res://scenes/structures/str4.tscn",
 ]
 var floor_atlas = 0
-var wall_atlas = 1
+var wall_atlas = 0
+var wall_cells = {"r": Vector2i(12, 9), "l": Vector2i(13, 9)}
+var floor_cells = [Vector2i(18, 4), Vector2i(18, 5), Vector2i(19, 6), Vector2i(20, 7)]
 
 func _ready():
+	generate_new_row()
+	generate_new_row()
+	generate_new_row()
 	position = Vector2i(0, 0)
-	generate_start()
 	$"../Player".position = Vector2i(int(width/2)*tile_size, 2*tile_size)
 	randomize()
-	
-func generate_start():
-	for y in range(start_height):
-		last_gen_y = y
-		for x in range(width):
-			set_cell(0, Vector2i(x, y), floor_atlas, random_choice(floor_cells))	
-			if y == 0:
-				set_cell(1, Vector2i(x, y), wall_atlas, random_choice(wall_cells))
-			elif x == 0 or x == width-1:
-				set_cell(1, Vector2i(x, y), wall_atlas, random_choice(wall_cells))
 
 func generate_new_row():
 	last_gen_y += 1
 	for y in range(4):
-		for x in range(width):
+		for x in range(width+2):
+			x -= 1
 			set_cell(0, Vector2(x, last_gen_y+y), floor_atlas, random_choice(floor_cells))
-			if x == 0 or x == width-1:
-				set_cell(1, Vector2(x, last_gen_y+y), wall_atlas, random_choice(wall_cells))
+			if x == -1:
+				set_cell(1, Vector2(x, last_gen_y+y), wall_atlas, wall_cells["l"])
+				set_cell(1, Vector2(x-1, last_gen_y+y), wall_atlas, wall_cells["r"])
+			elif x == width:
+				set_cell(1, Vector2(x, last_gen_y+y), wall_atlas, wall_cells["r"])
+				set_cell(1, Vector2(x+1, last_gen_y+y), wall_atlas, wall_cells["l"])
 	if randi()%2:
 		var structure = random_choice(structures)
 		structure = load(structure).instantiate()
