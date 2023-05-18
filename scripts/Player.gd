@@ -9,9 +9,9 @@ var inputs = {"right": Vector2.RIGHT,
 @onready var ray = $RayCast2D
 @onready var _animated_sprite = $AnimatedSprite2D
 
-var max_hp: int = 1000
+var max_hp: int = 100
 var hp: int = max_hp
-var max_mana: int = 1000
+var max_mana: int = 100
 var mana: int = max_mana
 var can_move: bool = true
 var game_over: bool = false
@@ -23,26 +23,22 @@ var move_speed: int = 1
 var moved_tiles: int = 0
 var attacked_times: int = 0
 var actions_done: int = 0
+var armour: int = 0
+var looking_dir = "down"
+var coins: int = 0
 var fists = {
 	"name": "fists",
-	"damage": 5,
+	"damage": 50,
 	"damage_range": 15,
 	"crit_chance": 5,
 	"crit_multiplier": 1.5,
 	"attack_speed": 2,
-	"range": 1
+	"range": 1,
+	"attack_angle": 180,
+	"armour_penetration": 0,
 }
-var eq = {
-	"wesapon": {
-		"name": "stick",
-		"damage": 5,
-		"damage_range": 15,
-		"crit_chance": 2.5,
-		"crit_multiplier": 0.5,
-		"attack_speed": 1,
-		"range": 1.5
-		}
-}
+var eq = {}
+
 
 func _ready():
 	position = position.snapped(Vector2.ONE * tile_size)
@@ -76,9 +72,12 @@ func move(dir):
 	var Map = get_tree().current_scene.get_node("Map")
 	ray.target_position = inputs[dir] * tile_size
 	ray.force_raycast_update()
+	looking_dir = dir
+	_animated_sprite.play(dir)
 	if !ray.is_colliding():
 		position += inputs[dir] * tile_size
-		if dir == "down" and int(position.y/tile_size) % 4 == 0:
+		collect_loot()
+		if dir == "down" and int(position.y/tile_size) % 5 == 0:
 			Map.generate_new_row()
 			
 func attack(enemy):
@@ -91,7 +90,7 @@ func attack(enemy):
 		calculated_damage = calculate_damage(weapon)
 		var distance = sqrt(pow(enemy.position.x - self.position.x, 2) + pow(enemy.position.y - self.position.y, 2))
 		if distance <= tile_size * weapon["range"]:
-			enemy.hit(self, calculated_damage)
+			enemy.hit(self, calculated_damage, weapon["armour_penetration"])
 		attacked_times += 1
 		if attacked_times >= weapon["attack_speed"]:
 			actions_done += 1
@@ -128,3 +127,14 @@ func add_xp(xp_amount):
 
 func inventory():
 	pass
+
+func collect_loot():
+	for loot in get_tree().get_nodes_in_group("loot"):
+		var distance = sqrt(pow(loot.position.x - self.position.x, 2) + pow(loot.position.y - self.position.y, 2))
+		if distance < 10:
+			add_to_eq(loot)
+			loot.queue_free()
+
+func add_to_eq(loot):
+	if loot.script_name == "coins":
+		self.coins += loot.amount

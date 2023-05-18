@@ -21,6 +21,39 @@ var wall_atlas = 0
 var wall_cells = {"r": Vector2i(12, 9), "l": Vector2i(13, 9)}
 var floor_cells = [Vector2i(18, 4), Vector2i(18, 5), Vector2i(19, 6), Vector2i(20, 7)]
 
+var loot_table = { 
+	25: {
+		"name": "stick",
+		"damage": 10,
+		"damage_range": 15,
+		"crit_chance": 2.5,
+		"crit_multiplier": 1.5,
+		"attack_speed": 1,
+		"range": 1.5,
+		"attack_angle": 90,
+		"armour_penetration": 0,
+		"src": ""
+		},
+	10: {
+		"name": "sword",
+		"damage": 10,
+		"damage_range": 15,
+		"crit_chance": 2.5,
+		"crit_multiplier": 2.5,
+		"attack_speed": 1,
+		"range": 1.5,
+		"attack_angle": 90,
+		"armour_penetration": 100,
+		"src": ""
+		},
+	"coins": {
+		"max_amount": 50,
+		"min_amount": 5,
+		"chance": 25,
+		"src": "res://scenes/loot/coin.tscn"
+	}
+}
+
 func _ready():
 	generate_new_row()
 	generate_new_row()
@@ -31,7 +64,7 @@ func _ready():
 
 func generate_new_row():
 	last_gen_y += 1
-	for y in range(4):
+	for y in range(5):
 		for x in range(width+2):
 			x -= 1
 			set_cell(0, Vector2(x, last_gen_y+y), floor_atlas, random_choice(floor_cells))
@@ -74,10 +107,11 @@ func generate_new_row():
 		enemy.damage = 5
 		enemy.speed = 1
 		enemy.dropped_xp = 10
+		enemy.armour = 0
 		enemy.add_to_group("enemies")
 
 	offset = 0
-	last_gen_y += 3
+	last_gen_y += 4
 
 func update_enemies():
 	var player = $"../Player"

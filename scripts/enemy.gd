@@ -13,6 +13,7 @@ var ray_move: RayCast2D
 var last_seen_player: Vector2 = Vector2(0, 0)
 var speed: int
 var dropped_xp: int
+var armour: int
 
 func _ready():
 	_animated_sprite.play("idle")
@@ -58,11 +59,19 @@ func set_hp(setted_hp):
 	$HP_bar.max_value = hp
 	$HP_bar.value = hp
 	
-func hit(player, setted_damage):
-	hp -= setted_damage
+func hit(player, given_damage, armour_penetration):
+	hp =- given_damage - given_damage * (armour - armour_penetration)
 	if hp <= 0:
+		var loot = get_tree().current_scene.get_node("Map").loot_table
 		player.add_xp(dropped_xp)
 		remove_from_group("enemies")
+		if randi()% 100 + 1 <= loot['coins']['chance']:
+			var coin = load(loot['coins']['src']).instantiate()
+			coin.amount = randi_range(loot['coins']['min_amount'], loot['coins']['max_amount'])
+			coin.script_name = "coins"
+			coin.position = self.position
+			coin.add_to_group("loot")
+			get_parent().add_child(coin)
 		queue_free()
 	$HP_bar.value = hp
 	
