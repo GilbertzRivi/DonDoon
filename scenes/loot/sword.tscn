@@ -23,15 +23,13 @@ script = ExtResource("1_rq2v5")
 
 [node name="Area2D" type="Area2D" parent="."]
 
-[node name="Panel" type="Panel" parent="Area2D"]
-modulate = Color(0, 1, 1, 1)
-offset_left = -64.0
-offset_right = 64.0
-offset_bottom = 64.0
-
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
 polygon = PackedVector2Array(-64, 64, 64, 64, 8, 0, -8, 0)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(15, -1)
 sprite_frames = SubResource("SpriteFrames_83xw7")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+modulate = Color(0, 0, 0, 0.278431)
+polygon = PackedVector2Array(-8, 0, -64, 64, 64, 64, 8, 0)

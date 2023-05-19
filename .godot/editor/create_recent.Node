@@ -1,3 +1,5 @@
+Polygon2D
+ColorRect
 Area2D
 CollisionPolygon2D
 AnimatedSprite2D
@@ -5,5 +7,4 @@ Container
 Sprite2D
 Panel
 CollisionShape2D
-Polygon2D
 Button

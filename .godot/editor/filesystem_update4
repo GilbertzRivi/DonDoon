@@ -1,6 +1,5 @@
 res://default_env.tres
-res://scenes/structures/str1.tscn
-res://scripts/Map.gd
+res://scenes/loot/sword.tscn
 res://scenes/inventory.tscn
 res://scenes/player.tscn
 res://scenes/enemy.tscn
@@ -9,9 +8,4 @@ res://scenes/loot/coin.tscn
 res://scenes/loot/fists.tscn
 res://scenes/main.tscn
 res://scenes/Enemies.tscn
-res://scenes/loot/sword.tscn
-res://scenes/structures/str2.tscn
-res://scripts/Player.gd
-res://scripts/sword.gd
-res://scripts/fists.gd
-res://scripts/enemy.gd
+res://scenes/structures/str1.tscn
