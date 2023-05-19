@@ -19,7 +19,7 @@ var xp: int = 0
 var level: int = 1
 var level_treshold: int = level * 125
 var skill_points: int = 0
-var move_speed: int = 1500
+var move_speed: int = 1
 var moved_tiles: int = 0
 var attacked_times: int = 0
 var actions_done: int = 0
@@ -36,16 +36,16 @@ func _ready():
 	$"../UI".set_hp_bar(max_hp, hp)
 	$"../UI".set_mana_bar(max_mana, mana)
 	$"../UI".set_xp_bar(level_treshold, xp)
-	fists = load("res://scenes/loot/fists.tscn").instantiate()
+	fists = load("res://scenes/loot/sword.tscn").instantiate()
 	fists.name = "weapon"
 	add_child(fists)
 
 func _unhandled_input(event):
 	var Map = get_tree().current_scene.get_node("Map")
-	if can_move and !game_over:
+	if !game_over:
 		if event.is_action_pressed("inventory"):
 			inventory()
-		if actions_done == 0:
+		if actions_done == 0 and can_move:
 			if (event.is_action_pressed("down") or event.is_action_pressed("up") or 
 				event.is_action_pressed("left") or event.is_action_pressed("right")): 
 				for dir in inputs.keys():
@@ -125,18 +125,30 @@ func add_xp(xp_amount):
 	$"../UI".set_xp_bar(level_treshold, xp)
 
 func inventory():
-	pass
+	var inv = get_node_or_null("../inventory")
+	if inv:
+		inv.close()
+		return	 
+	inv = load("res://scenes/inventory.tscn").instantiate()
+	var canvas = inv.get_node("CanvasLayer")
+	for item in eq:
+		canvas.get_node(str(int(item)+1)).text = eq[item]['name']
+	$"..".add_child(inv) 
+	can_move = false
 
 func collect_loot():
 	for loot in get_tree().get_nodes_in_group("loot"):
 		var distance = sqrt(pow(loot.position.x - self.position.x, 2) + pow(loot.position.y - self.position.y, 2))
 		if distance < 10:
-			add_to_eq(loot)
-			loot.queue_free()
+			if add_to_eq(loot):
+				loot.queue_free()
 
 func add_to_eq(loot):
 	if loot.script_name == "coins":
 		self.coins += loot.amount
+		return true
 	else:
-		eq[str(len(eq))] = loot.data
-	print(eq, " ", coins)
+		if len(eq) < 9:
+			eq[str(len(eq))] = loot.data
+			return true
+	return false

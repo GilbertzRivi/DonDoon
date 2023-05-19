@@ -61,6 +61,7 @@ func set_hp(setted_hp):
 	
 func hit(player, given_damage, armour_penetration):
 	hp -= given_damage - given_damage * (armour - armour_penetration)
+	last_seen_player = player.position
 	if hp <= 0:
 		player.add_xp(dropped_xp)
 		remove_from_group("enemies")
@@ -132,7 +133,8 @@ func drop_loot():
 		coin.add_to_group("loot")
 		get_parent().add_child(coin)
 	else:
-		if randi()%100+1 <= loot['chance']:
+		#if randi()%100+1 <= loot['chance']:
+		if true:
 			loot = load(loot['src']).instantiate()
 			loot.script_name = choosen_loot
 			loot.position = self.position
