@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://dexvtl2ttblab"]
+
+[ext_resource type="Script" path="res://scripts/sword.gd" id="1_rq2v5"]
+[ext_resource type="Texture2D" uid="uid://b2ec0bj8ceasp" path="res://assets2/Sword_Pixel_art_-_Radin.png" id="2_2usyb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icbdt"]
+atlas = ExtResource("2_2usyb")
+region = Rect2(0, 0, 20, 20)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_83xw7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_icbdt")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="sword" type="Node2D"]
+script = ExtResource("1_rq2v5")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="Panel" type="Panel" parent="Area2D"]
+modulate = Color(0, 1, 1, 1)
+offset_left = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(-64, 64, 64, 64, 8, 0, -8, 0)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(15, -1)
+sprite_frames = SubResource("SpriteFrames_83xw7")

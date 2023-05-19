@@ -9,7 +9,7 @@ var inputs = {"right": Vector2.RIGHT,
 @onready var ray = $RayCast2D
 @onready var _animated_sprite = $AnimatedSprite2D
 
-var max_hp: int = 100
+var max_hp: int = 1000
 var hp: int = max_hp
 var max_mana: int = 100
 var mana: int = max_mana
@@ -19,24 +19,14 @@ var xp: int = 0
 var level: int = 1
 var level_treshold: int = level * 125
 var skill_points: int = 0
-var move_speed: int = 1
+var move_speed: int = 1500
 var moved_tiles: int = 0
 var attacked_times: int = 0
 var actions_done: int = 0
 var armour: int = 0
 var looking_dir = "down"
 var coins: int = 0
-var fists = {
-	"name": "fists",
-	"damage": 5,
-	"damage_range": 15,
-	"crit_chance": 5,
-	"crit_multiplier": 1.5,
-	"attack_speed": 2,
-	"range": 1,
-	"attack_angle": 180,
-	"armour_penetration": 0,
-}
+var fists
 var eq = {}
 
 
@@ -46,7 +36,9 @@ func _ready():
 	$"../UI".set_hp_bar(max_hp, hp)
 	$"../UI".set_mana_bar(max_mana, mana)
 	$"../UI".set_xp_bar(level_treshold, xp)
-	_animated_sprite.play("idle")
+	fists = load("res://scenes/loot/fists.tscn").instantiate()
+	fists.name = "weapon"
+	add_child(fists)
 
 func _unhandled_input(event):
 	var Map = get_tree().current_scene.get_node("Map")
@@ -72,8 +64,13 @@ func move(dir):
 	var Map = get_tree().current_scene.get_node("Map")
 	ray.target_position = inputs[dir] * tile_size
 	ray.force_raycast_update()
-	looking_dir = dir
 	_animated_sprite.play(dir)
+	var rotating
+	if dir == "left": rotating = 90
+	elif dir == "right": rotating = -90
+	elif dir == "down": rotating = 0
+	elif dir == "up": rotating = 180
+	$"weapon/Area2D".rotation = deg_to_rad(rotating)
 	if !ray.is_colliding():
 		position += inputs[dir] * tile_size
 		collect_loot()
@@ -84,26 +81,18 @@ func attack(enemy):
 	var Map = get_tree().current_scene.get_node("Map")
 	if can_move and not game_over and not actions_done:
 		var calculated_damage
-		var weapon = fists
+		var weapon = fists.data
 		if eq.has('weapon'):
 			weapon = eq['weapon']
 		calculated_damage = calculate_damage(weapon)
-		var distance = sqrt(pow(enemy.position.x - self.position.x, 2) + pow(enemy.position.y - self.position.y, 2))
-		var x
-		if looking_dir == "right":
-			x = self.position.x - enemy.position.x
-		elif looking_dir == "left":
-			x = enemy.position.x - self.position.x
-		elif looking_dir == "down":
-			x = self.position.y - enemy.position.y
-		elif looking_dir == "up":
-			x = enemy.position.y - self.position.y
-		var angle_cos: float = x/distance
-		if distance <= tile_size * weapon["range"] and angle_cos <= cos(deg_to_rad(weapon['attack_angle'])):
+		var bodies_in_range = $"weapon/Area2D".get_overlapping_bodies()
+		var in_range = bodies_in_range.has(enemy)
+		if in_range:	
 			enemy.hit(self, calculated_damage, weapon["armour_penetration"])
 			attacked_times += 1
 			if attacked_times >= weapon["attack_speed"]:
 				actions_done += 1
+				
 	if actions_done:
 		can_move = false
 		Map.update_enemies()
@@ -148,3 +137,6 @@ func collect_loot():
 func add_to_eq(loot):
 	if loot.script_name == "coins":
 		self.coins += loot.amount
+	else:
+		eq[str(len(eq))] = loot.data
+	print(eq, " ", coins)

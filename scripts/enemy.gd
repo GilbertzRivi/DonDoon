@@ -70,8 +70,8 @@ func hit(player, given_damage, armour_penetration):
 	
 func attack(player) -> bool:
 	var attacked = false
-	var distance = sqrt(pow(position.x - player.position.x,2) + pow(position.y - player.position.y,2))
-	if distance <= attack_range * tile_size:
+	var my_distance = sqrt(pow(position.x - player.position.x,2) + pow(position.y - player.position.y,2))
+	if my_distance <= attack_range * tile_size:
 		player.hit(damage)
 		attacked = true
 	return attacked
@@ -131,7 +131,10 @@ func drop_loot():
 		coin.position = self.position
 		coin.add_to_group("loot")
 		get_parent().add_child(coin)
-#	else:
-#		loot = load(loot['src']).instantiate()
-#		loot.script_name = choosen_loot
-#		loot.position = self.position
+	else:
+		if randi()%100+1 <= loot['chance']:
+			loot = load(loot['src']).instantiate()
+			loot.script_name = choosen_loot
+			loot.position = self.position
+			loot.add_to_group("loot")
+			get_parent().add_child(loot)

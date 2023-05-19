@@ -38,8 +38,8 @@ script = ExtResource("2")
 shape = SubResource("1")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(-1, -22)
-scale = Vector2(1.50781, 1.70139)
+position = Vector2(-1, -11.6875)
+scale = Vector2(1.50781, 1.12847)
 sprite_frames = SubResource("6")
 animation = &"idle"
 frame_progress = 0.694274
@@ -57,6 +57,6 @@ show_percentage = false
 [node name="Button" type="Button" parent="."]
 modulate = Color(1, 1, 1, 0)
 offset_left = -14.0
-offset_top = -26.0
+offset_top = -18.0
 offset_right = 12.0
 offset_bottom = 9.0

@@ -239,3 +239,8 @@ layer_1/y_sort_enabled = false
 layer_1/y_sort_origin = 0
 layer_1/z_index = 0
 layer_1/tile_data = PackedInt32Array(131074, 196610, 6, 65539, 131074, 6, 65537, 65538, 5, 2, 196610, 4, 65538, 196610, 5, 3, 131074, 5, -65534, 65538, 2, 1, 65538, 4, 0, 2, 4, 131073, 65538, 6, 4, 262146, 4, 65540, 262146, 5, -65532, 262146, 2, -131069, 262146, 2, -131070, 2, 2, -65533, 196610, 2, -65535, 131074, 1, -65536, 65538, 1, 65536, 2, 5)
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(0, 0, 0, 64, 32, 64, 32, 96, 96, 96, 96, 64, 160, 64, 160, 0, 128, 0, 128, -32, 64, -32, 64, 0)
