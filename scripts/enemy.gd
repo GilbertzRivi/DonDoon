@@ -124,19 +124,36 @@ func being_attacked():
 func drop_loot():
 	var loot = get_tree().current_scene.get_node("Map").loot_table
 	var choosen_loot = loot.keys()[randi() % loot.keys().size()]
-	loot = loot[choosen_loot]
-	if choosen_loot == 'coins':
-		var coin = load(loot['src']).instantiate()
-		coin.amount = randi_range(loot['min_amount'], loot['max_amount'])
+	if randi()%100 <= 35:
+		var coin = load(loot['coins']['src']).instantiate()
+		coin.amount = randi_range(loot['coins']['min_amount'], loot['coins']['max_amount'])
 		coin.script_name = "coins"
 		coin.position = self.position
 		coin.add_to_group("loot")
 		get_parent().add_child(coin)
 	else:
+		loot = loot[choosen_loot]
 		#if randi()%100+1 <= loot['chance']:
 		if true:
+			var rarity = choose_rarity()
 			loot = load(loot['src']).instantiate()
 			loot.script_name = choosen_loot
 			loot.position = self.position
+			loot.rarity = rarity
 			loot.add_to_group("loot")
 			get_parent().add_child(loot)
+
+func choose_rarity():
+	var r = randi()%100
+	if r <= 50:
+		return "common"
+	elif r <= 70:
+		return "better"
+	elif r <= 85:
+		return "rare"
+	elif r <= 95:
+		return "magic"
+	elif r <= 99:
+		return "epic"
+	else:
+		return "best"

@@ -149,6 +149,11 @@ func add_to_eq(loot):
 		return true
 	else:
 		if len(eq) < 9:
+			var Map = get_tree().current_scene.get_node("Map")
+			for modifier in Map.rarity_mod[loot.rarity]:
+				loot.data[modifier] += Map.rarity_mod[loot.rarity][modifier]
+			loot.data["name"] = loot.rarity + " " + loot.name
 			eq[str(len(eq))] = loot.data
+			print(loot.rarity, ", ", loot.data)
 			return true
 	return false

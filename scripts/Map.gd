@@ -49,6 +49,45 @@ var loot_table = {
 	}
 }
 
+var rarity_mod = {
+	"common": {
+		"damage": 0,
+		"crit_chance": 0,
+		"crit_multiplier": 0,
+		"armour_penetration": 0,
+	},
+	"better": {
+		"damage": 5,
+		"crit_chance": 2.5,
+		"crit_multiplier": 0.25,
+		"armour_penetration": 5,
+	},
+	"rare": {
+		"damage": 10,
+		"crit_chance": 5,
+		"crit_multiplier": 0.5,
+		"armour_penetration": 5,
+	},
+	"magic": {
+		"damage": 10,
+		"crit_chance": 5,
+		"crit_multiplier": 1,
+		"armour_penetration": 7.5,
+	},
+	"epic": {
+		"damage": 15,
+		"crit_chance": 10,
+		"crit_multiplier": 1,
+		"armour_penetration": 15,
+	},
+	"best": {
+		"damage": 25,
+		"crit_chance": 15,
+		"crit_multiplier": 2,
+		"armour_penetration": 25,
+	},
+}
+
 func _ready():
 	generate_new_row()
 	generate_new_row()
